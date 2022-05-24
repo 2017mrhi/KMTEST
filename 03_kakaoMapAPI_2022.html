@@ -13,9 +13,8 @@
 
     <!-- 앱 만들기 후에 [설정]에서 플랫폼으로 '웹'선택하여 추가해야함. (플랫폼에 host도메인 추가 - http://mrhi2020.dothome.co.kr and https://2017mrhi.github.io/) -->
     <!-- [단, URL이 필요하므로 테스트는 dothome에 올려놓고 해야함 [dothome의 URL을 기입 : http://mrhi2020.dothome.co.kr/03_kakaoMapAPI_2021.html] ] -->
-
-
-    <!-- [혹시 Dothome이 안되면 Github pages 로 정적웹페이지 사이트 사용 [https://2017mrhi.github.io/kmap/03_kakaoMapAPI_2021]] : github페이지가 반영되는데 조금 시간지연이 있음. 보통 1분 이내-->
+    <!-- [혹시 Dothome이 안되면 Github pages 로 정적웹페이지 사이트 사용 [https://2017mrhi.github.io/kmap/03_kakaoMapAPI_2021]] -->
+    <!-- : github pages는 반영되는데 조금 시간지연이 있음. 보통 1분 이내 - 파일을 변경하여 새로 업로드해도 적용 지연시간 있음.-->
 
     <!-- Kakao 지도 라이브러리 적용 및 [JavaScript 키] 등록-->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	9c85406a2f39edf3cdb06c081d622638"></script>
@@ -31,6 +30,9 @@
 
         var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
+
+        // ***  가이드 문서의 side메뉴 중 Sample 에 여러 상황에 대한 코드가 소개되어 있음. --- SAMPLE 문서를 통해 원하는 모든 기능 구현이 가능함. *** 
+
         // 마커가 표시될 위치입니다 
         var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667); 
 
@@ -43,24 +45,99 @@
         marker.setMap(map);
 
         // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
-        // marker.setMap(null);    
+        // marker.setMap(null);  
+        
+        //다른 것들은 다음(카카오)지도 API 사이트의 왼쪽 사이드 [Sample]탭을 보면 종류별로 코드제공함
+        //http://apis.map.daum.net/web/sample/
 
     </script>
 
-    <!-- 지도에 추가 기능을 넣는 것은 라이브러리를 추가하여 적용 -->
-    <!-- 지도 라이브러리란?
-    Kakao 지도 Javascript API 는 지도와 함께 사용할 수 있는 라이브러리 를 지원하고 있습니다.
-    라이브러리는 javascript API와 관련되어 있지만 조금 특화된 기능을 묶어둔 것을 말합니다. 이 기능은 추가로 불러와서 사용할 수 있도록 되어있습니다.
-    현재 사용할 수 있는 라이브러리는 다음과 같습니다.
 
-    clusterer: 마커를 클러스터링 할 수 있는 클러스터러 라이브러리 입니다.
-    services: 장소 검색 과 주소-좌표 변환 을 할 수 있는 services 라이브러리 입니다.
-    drawing: 지도 위에 마커와 그래픽스 객체를 쉽게 그릴 수 있게 그리기 모드를 지원하는 drawing 라이브러리 입니다. -->
-
-    <!-- services와 clusterer, drawing 라이브러리 불러오기 -->
-    <!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services,clusterer,drawing"></script> -->
+    <!-- 예)커스텀 오버레이 -->
+    <div id="map2" style="width:100%;height:400px;"></div>
 
 
+    <style>
+        .overlaybox {position:relative;width:360px;height:350px;background:url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/box_movie.png') no-repeat;padding:15px 10px;}
+        .overlaybox div, ul {overflow:hidden;margin:0;padding:0;}
+        .overlaybox li {list-style: none;}
+        .overlaybox .boxtitle {color:#fff;font-size:16px;font-weight:bold;background: url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png') no-repeat right 120px center;margin-bottom:8px;}
+        .overlaybox .first {position:relative;width:247px;height:136px;background: url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumb.png') no-repeat;margin-bottom:8px;}
+        .first .text {color:#fff;font-weight:bold;}
+        .first .triangle {position:absolute;width:48px;height:48px;top:0;left:0;background: url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/triangle.png') no-repeat; padding:6px;font-size:18px;}
+        .first .movietitle {position:absolute;width:100%;bottom:0;background:rgba(0,0,0,0.4);padding:7px 15px;font-size:14px;}
+        .overlaybox ul {width:247px;}
+        .overlaybox li {position:relative;margin-bottom:2px;background:#2b2d36;padding:5px 10px;color:#aaabaf;line-height: 1;}
+        .overlaybox li span {display:inline-block;}
+        .overlaybox li .number {font-size:16px;font-weight:bold;}
+        .overlaybox li .title {font-size:13px;}
+        .overlaybox ul .arrow {position:absolute;margin-top:8px;right:25px;width:5px;height:3px;background:url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/updown.png') no-repeat;} 
+        .overlaybox li .up {background-position:0 -40px;}
+        .overlaybox li .down {background-position:0 -60px;}
+        .overlaybox li .count {position:absolute;margin-top:5px;right:15px;font-size:10px;}
+        .overlaybox li:hover {color:#fff;background:#d24545;}
+        .overlaybox li:hover .up {background-position:0 0px;}
+        .overlaybox li:hover .down {background-position:0 -20px;}
+    </style>
+
+    <script>
+
+        var mapContainer = document.getElementById('map2'), // 지도를 표시할 div 
+            mapOption = { 
+                center: new daum.maps.LatLng(37.502, 127.026581), // 지도의 중심좌표
+                level: 4 // 지도의 확대 레벨
+            };
+        var map2 = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+        var content = '<div class="overlaybox">' +
+            '    <div class="boxtitle">금주 영화순위</div>' +
+            '    <div class="first">' +
+            '        <div class="triangle text">1</div>' +
+            '        <div class="movietitle text">드래곤 길들이기2</div>' +
+            '    </div>' +
+            '    <ul>' +
+            '        <li class="up">' +
+            '            <span class="number">2</span>' +
+            '            <span class="title">명량</span>' +
+            '            <span class="arrow up"></span>' +
+            '            <span class="count">2</span>' +
+            '        </li>' +
+            '        <li>' +
+            '            <span class="number">3</span>' +
+            '            <span class="title">해적(바다로 간 산적)</span>' +
+            '            <span class="arrow up"></span>' +
+            '            <span class="count">6</span>' +
+            '        </li>' +
+            '        <li>' +
+            '            <span class="number">4</span>' +
+            '            <span class="title">해무</span>' +
+            '            <span class="arrow up"></span>' +
+            '            <span class="count">3</span>' +
+            '        </li>' +
+            '        <li>' +
+            '            <span class="number">5</span>' +
+            '            <span class="title">안녕, 헤이즐</span>' +
+            '            <span class="arrow down"></span>' +
+            '            <span class="count">1</span>' +
+            '        </li>' +
+            '    </ul>' +
+            '</div>';
+
+        // 커스텀 오버레이가 표시될 위치입니다 
+        var position = new daum.maps.LatLng(37.49887, 127.026581);  
+
+        // 커스텀 오버레이를 생성합니다
+        var customOverlay = new daum.maps.CustomOverlay({
+            position: position,
+            content: content,
+            xAnchor: 0.3,
+            yAnchor: 0.91
+        });
+
+        // 커스텀 오버레이를 지도에 표시합니다
+        customOverlay.setMap(map2);
+
+    </script>
 
 
     <!-- 테스트는 웹에서만 구동되므로 웹서버에 업로드 후 결과 확인 -->
@@ -69,7 +146,6 @@
     게시 된 GitHub 페이지 사이트는 1GB를 초과 할 수 없습니다.
     GitHub 페이지 사이트의 대역폭 제한은 한 달에 100GB입니다.
     GitHub 페이지 사이트의 builds 제한은 시간당 10회 입니다. -->
-
 	
 
 </body>
