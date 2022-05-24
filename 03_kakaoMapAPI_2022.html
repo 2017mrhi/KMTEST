@@ -13,7 +13,9 @@
 
     <!-- 앱 만들기 후에 [설정]에서 플랫폼으로 '웹'선택하여 추가해야함. (플랫폼에 host도메인 추가 - http://mrhi2020.dothome.co.kr and https://2017mrhi.github.io/) -->
     <!-- [단, URL이 필요하므로 테스트는 dothome에 올려놓고 해야함 [dothome의 URL을 기입 : http://mrhi2020.dothome.co.kr/03_kakaoMapAPI_2021.html] ] -->
-    <!-- [혹시 Dothome이 안되면 Github pages 로 정적웹페이지 사이트 사용 [https://2017mrhi.github.io/kmap/03_kakaoMapAPI_2021]] -->
+
+
+    <!-- [혹시 Dothome이 안되면 Github pages 로 정적웹페이지 사이트 사용 [https://2017mrhi.github.io/kmap/03_kakaoMapAPI_2021]] : github페이지가 반영되는데 조금 시간지연이 있음. 보통 1분 이내-->
 
     <!-- Kakao 지도 라이브러리 적용 및 [JavaScript 키] 등록-->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	9c85406a2f39edf3cdb06c081d622638"></script>
@@ -28,9 +30,45 @@
         };
 
         var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+        // 마커가 표시될 위치입니다 
+        var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667); 
+
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+            position: markerPosition
+        });
+
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+
+        // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+        // marker.setMap(null);    
+
     </script>
 
+    <!-- 지도에 추가 기능을 넣는 것은 라이브러리를 추가하여 적용 -->
+    <!-- 지도 라이브러리란?
+    Kakao 지도 Javascript API 는 지도와 함께 사용할 수 있는 라이브러리 를 지원하고 있습니다.
+    라이브러리는 javascript API와 관련되어 있지만 조금 특화된 기능을 묶어둔 것을 말합니다. 이 기능은 추가로 불러와서 사용할 수 있도록 되어있습니다.
+    현재 사용할 수 있는 라이브러리는 다음과 같습니다.
+
+    clusterer: 마커를 클러스터링 할 수 있는 클러스터러 라이브러리 입니다.
+    services: 장소 검색 과 주소-좌표 변환 을 할 수 있는 services 라이브러리 입니다.
+    drawing: 지도 위에 마커와 그래픽스 객체를 쉽게 그릴 수 있게 그리기 모드를 지원하는 drawing 라이브러리 입니다. -->
+
+    <!-- services와 clusterer, drawing 라이브러리 불러오기 -->
+    <!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services,clusterer,drawing"></script> -->
+
+
+
+
     <!-- 테스트는 웹에서만 구동되므로 웹서버에 업로드 후 결과 확인 -->
+
+    <!-- GitHub Pages 소스 저장소의 권장 제한은 1GB입니다.
+    게시 된 GitHub 페이지 사이트는 1GB를 초과 할 수 없습니다.
+    GitHub 페이지 사이트의 대역폭 제한은 한 달에 100GB입니다.
+    GitHub 페이지 사이트의 builds 제한은 시간당 10회 입니다. -->
 
 	
 
